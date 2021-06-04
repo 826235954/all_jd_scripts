@@ -124,8 +124,7 @@ async function main() {
 			console.log($.pinList)
 			for(let i = 0; i < $.pinList.length ; i++){
 					let pin = $.pinList[i];
-					console.log('循环出来的pin：' + pin)
-					await submitPKCode(pin)
+					console.log('别人的的pin：' + pin)
 					let fscore=await getScore(pin);
 					console.log("别人的京享值:"+fscore);
 					if(fscore<myScore){
