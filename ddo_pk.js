@@ -43,6 +43,7 @@ let cookiesArr = [],
 	cookie = "",
 	message;
 let minPrize = 1;
+let bcomplate = false;
 
 if ($.isNode()) {
 	Object.keys(jdCookieNode).forEach((item) => {
@@ -112,6 +113,10 @@ async function main() {
 		if($.pinList){
 			console.log($.pinList)
 			for(let i = 0; i < $.pinList.length ; i++){
+				if(bcomplate){
+					break;
+				}
+				else{
 					let pin = $.pinList[i];
 					console.log('别人的的pin：' + pin)
 					let fscore=await getScore(pin);
@@ -119,8 +124,12 @@ async function main() {
 					if(fscore<myScore){
 						await launchBattle(pin);
 						await receiveBattle(pin);
-					}
+					}					
+					
+				}
+		
 			}
+			bcomplate =false;
 		}
 
 		await getBoxRewardInfo();
@@ -208,6 +217,9 @@ function launchBattle(fpin) {
 						data=data.data;
 						if(data.msg){
 						    console.log(data.msg);
+							if(data.msg =="今日次数已耗尽"){
+							bcomplate=true;
+							}
 						}else{
 						     console.log($.toStr(data));
 						}
@@ -246,7 +258,7 @@ function getScore(fpin){
 				if (res) {
 					let data = $.toObj(res);
 					if (data) {
-					    score = data.data
+					    score = data.data;
 					}
 				}
 			} catch (e) {
