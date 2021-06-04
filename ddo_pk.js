@@ -180,7 +180,7 @@ function submitPKCode (pin) {
 	})
 }
 
-function getPinList(num = 2){
+function getPinList(num = 20){
 	console.log("获取Pk列表");
 	return new Promise((resolve) => {
 		let options = {
