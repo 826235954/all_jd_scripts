@@ -21,6 +21,7 @@ cron "15 0,6,13,19,21 * * *" script-path=https://raw.githubusercontent.com/hyzaw
 ============小火箭=========
 京喜财富岛 = type=cron,script-path=https://raw.githubusercontent.com/hyzaw/scripts/main/ddo_pk.js, cronexpr="15 0,6,13,19,21 * * *", timeout=3600, enable=true
  */
+const $ = new Env('京享值PK');
 $.toObj = (t, e = null) => {
 	try {
 		return JSON.parse(t)
