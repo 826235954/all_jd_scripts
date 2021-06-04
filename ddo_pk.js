@@ -8,7 +8,7 @@ cron 15 0,6,13,19,21 * * * ddo_pk.js
 脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
 ============Quantumultx===============
 [task_local]
-#京喜财富岛
+#京享值PK
 15 0,6,13,19,21 * * * https://raw.githubusercontent.com/hyzaw/scripts/main/ddo_pk.js, tag=京享值PK
 
 ================Loon==============
