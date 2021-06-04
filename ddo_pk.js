@@ -110,17 +110,6 @@ async function main() {
 		await submitPKCode($.pin)
 		console.log("我的京享值:"+myScore);
 		if($.pinList){
-			// for(let index=0;index<$.pinList.length;index++){
-			// 		let item=$.pinList[index];
-			// 		let pin=item.friendPin;
-			// 		await submitPKCode(pin)
-			// 		let fscore=await getScore(pin);
-			// 		console.log("别人的京享值:"+fscore);
-			// 		if(fscore<myScore){
-			// 			await launchBattle(pin);
-			// 			await receiveBattle(pin);
-			// 		}
-			// }
 			console.log($.pinList)
 			for(let i = 0; i < $.pinList.length ; i++){
 					let pin = $.pinList[i];
@@ -133,17 +122,6 @@ async function main() {
 					}
 			}
 		}
-		// if($.helpAuthor){
-		//     	let authScore=await getScore(authorPin);
-		//         console.log("爸爸的京享值:"+authScore);
-		//         if(authScore>myScore){//反向操作，嘻嘻嘻
-		//             console.log('帮爸爸挑战一次');
-		//             await launchBattle(authorPin);
-	  //           	await receiveBattle(authorPin);
-		//         }else{
-		//             console.log('淦，分比爸爸高，不挑战了');
-		//         }
-		// }
 
 		await getBoxRewardInfo();
 		console.log("去开宝箱");
@@ -203,41 +181,6 @@ function getPinList(num = 20){
 	});
 }
 
-// function getPinList(){
-// 	console.log("获取Pk列表");
-// 	return new Promise((resolve) => {
-// 		let options = {
-// 			"url": "https://pengyougou.m.jd.com/like/jxz/getUserFriends?actId=8&appId=dafbe42d5bff9d82298e5230eb8c3f79&lkEPin="+$.pin,
-// 			"headers": {
-// 				"Host": "jdjoy.jd.com",
-// 				"Origin": "https://prodev.m.jd.com",
-// 				"Cookie": cookie,
-// 				"Connection": "keep-alive",
-// 				"Accept": "application/json, text/plain, */*",
-// 				"User-Agent": "jdapp;iPhone;9.5.4;13.6;db48e750b34fe9cd5254d970a409af316d8b5cf3;network/wifi;ADID/38EE562E-B8B2-7B58-DFF3-D5A3CED0683A;model/iPhone10,3;addressid/0;appBuild/167668;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS 13_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1",
-// 				"Accept-Language": "zh-cn",
-// 				"Referer": "https://prodev.m.jd.com/mall/active/4HTqMAvser7ctEBEdhK4yA7fXpPi/index.html?babelChannel=ttt9&tttparams=AeOIMwdeyJnTG5nIjoiMTE3LjAyOTE1NyIsImdMYXQiOiIyNS4wOTUyMDcifQ7%3D%3D&lng=00.000000&lat=00.000000&sid=&un_area="
-// 			}
-// 		}
-
-// 		$.get(options, (err, resp, res) => {
-// 			try {
-// 				console.log(res);
-// 				if (res) {
-// 					let data = $.toObj(res);
-// 					if (data.success) {
-// 						$.pinList = data.datas;
-// 					}
-
-// 				}
-// 			} catch (e) {
-// 				console.log(e);
-// 			} finally {
-// 				resolve(res);
-// 			}
-// 		})
-// 	});
-// }
 
 function launchBattle(fpin) {
 	console.log("发起挑战");
