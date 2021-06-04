@@ -107,7 +107,7 @@ async function main() {
 		}
 		await getPinList(30); // 获取的pin列表
 		let myScore=await getScore($.pin);
-		await submitPKCode(pin)
+		await submitPKCode($.pin)
 		console.log("我的京享值:"+myScore);
 		if($.pinList){
 			// for(let index=0;index<$.pinList.length;index++){
