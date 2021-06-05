@@ -139,6 +139,13 @@ function submitPKCode (pin) {
 	return new Promise((resolve) => {
 		let options = {
 			"url": `https://pool.nz.lu/upload/PKv2/${pin}`,
+			"headers": {
+				"Host": "pool.nz.lu",
+				"Connection": "keep-alive",
+				"Accept": " */*",
+				"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4433.0 Safari/537.36",
+				"Accept-Language": "zh-cn",
+			}
 		}
 
 		$.get(options, (err, resp, res) => {
@@ -160,6 +167,13 @@ function getPinList(num = 20){
 	return new Promise((resolve) => {
 		let options = {
 			"url": `https://pool.nz.lu/get/PKv2/${num}`,
+			"headers": {
+				"Host": "pool.nz.lu",
+				"Connection": "keep-alive",
+				"Accept": " */*",
+				"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4433.0 Safari/537.36",
+				"Accept-Language": "zh-cn",
+			}
 		}
 
 		$.get(options, (err, resp, res) => {
