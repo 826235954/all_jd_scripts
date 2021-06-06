@@ -138,7 +138,7 @@ function submitPKCode (pin) {
 	console.log(`上传pk码: ${pin}`);
 	return new Promise((resolve) => {
 		let options = {
-			"url": `https://pool.nz.lu/upload/PKv2/${pin}`,
+			"url": `https://pool.nz.lu/api/?type=upload&name=PK&code=${pin}`,
 			"headers": {
 				"Host": "pool.nz.lu",
 				"Connection": "keep-alive",
@@ -166,7 +166,7 @@ function getPinList(num = 20){
 	console.log("获取Pk列表");
 	return new Promise((resolve) => {
 		let options = {
-			"url": `https://pool.nz.lu/get/PKv2/${num}`,
+			"url": `https://pool.nz.lu/api/?type=get&name=PK&count=${num}`,
 			"headers": {
 				"Host": "pool.nz.lu",
 				"Connection": "keep-alive",
