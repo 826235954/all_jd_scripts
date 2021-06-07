@@ -189,7 +189,7 @@ function getPinList(num = 20){
 			try {
 				if (res) {
 					let data = $.toObj(res);
-					$.pinList = data.data.split(',');
+					$.pinList = data.data;
 				}
 			} catch (e) {
 				console.log(e);
