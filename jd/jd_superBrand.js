@@ -81,17 +81,24 @@ const JD_API_HOST = `https://api.m.jd.com/client.action`;
                 $.actid = actdata.actid
                 $.enpid = actdata.enpid
                 $.actname = actdata.actname
+                if($.actid&&$.enpid){
                 await getCode("secondfloor", $.actid)
                 await doTask("secondfloor", $.enpid, $.taskList[0].encryptAssignmentId, $.taskList[0].ext.followShop[0].itemId, $.taskList[0].assignmentType)
+                await $.wait(500);
                 await doTask("secondfloor", $.enpid, $.taskList[2].encryptAssignmentId, $.taskList[2].ext.brandMemberList[0].itemId, $.taskList[2].assignmentType)
+                await $.wait(500);
+               } 
                 await superBrandTaskLottery()
+                await $.wait(500);                
                 await superBrandTaskLottery()
-                await superBrandTaskLottery()
+                 await $.wait(1000);               
                 let signdata = await getid("showSecondFloorSignInfo", "sign")
+                if(signdata.enpid&&signdata.actid){
                 await doTask("sign", signdata.enpid, signdata.eid, 1, 5)
                 let signList = await getCode("sign", signdata.actid)
                 let signeid = signList[1].encryptAssignmentId
                 await superBrandTaskLottery("sign", signdata.actid, signdata.enpid, signeid)
+               } 
             }
         }
     }
@@ -260,7 +267,7 @@ function superBrandTaskLottery(source = "secondfloor", actid, enpid, signeid) {
                     //   console.log(data)
                     if (data && data.code === "0") {
                         if (data.data.bizCode === "TK000") {
-                            console.log(`获得 你猜获得了啥🐶`)
+                         console.log(`获得 京豆 ${data.data.result.userAwardInfo.beanNum}`)
                         } else {
                             console.log(data.data.bizMsg)
                         }

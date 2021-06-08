@@ -26,7 +26,7 @@ cron "1 0-23/1 * 6 *" script-path=https://raw.githubusercontent.com/Wenmoux/scri
 const $ = new Env('翻翻乐');
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-const money = $.isNode() ? (process.env.Openmoney ? process.env.Openmoney : 0.6) : 0.6
+const money = $.isNode() ? (process.env.Openmoney ? process.env.Openmoney : 0.3) : 0.3
 const randomCount = $.isNode() ? 20 : 5;
 const notify = $.isNode() ? require('./sendNotify') : '';
 let merge = {}
