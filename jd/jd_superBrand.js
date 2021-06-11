@@ -88,10 +88,11 @@ const JD_API_HOST = `https://api.m.jd.com/client.action`;
                 await superBrandTaskLottery()
                 await $.wait(500);                
                 await superBrandTaskLottery()
-                 await $.wait(2000);               
+                await $.wait(1000);                             
                 let signdata = await getid("showSecondFloorSignInfo", "sign")
                 if(signdata&&signdata.enpid&&signdata.actid){
                 await doTask("sign", signdata.enpid, signdata.eid, 1, 5)
+                await $.wait(500); 
                 let signList = await getCode("sign", signdata.actid)
                 let signeid = signList[1].encryptAssignmentId
                 await superBrandTaskLottery("sign", signdata.actid, signdata.enpid, signeid)
