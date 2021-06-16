@@ -82,6 +82,7 @@ const JD_API_HOST = `https://api.m.jd.com/client.action`;
                     let index = task.name.match(/\d+/)[0] - 1
                     console.log(task.topResource.task.advertId, index, task.type)
                     await browse(task.topResource.task.advertId)
+                    await $.wait(1000);
                     await browseAward(task.topResource.task.advertId, index, task.type)
                 }
             }
