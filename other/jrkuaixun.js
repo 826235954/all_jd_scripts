@@ -74,16 +74,18 @@ message = ""
                     message += `账号【${k+1}】：${$.message} \n\n `
                 }
             }
-        }    
-        if ($.isNode()) {
+        }   
+        if (message.length != 0) {
+         $.msg($.name, "", '10s阅读' + message) 
+         }
+    /*    if ($.isNode()) {
             if (message.length != 0) {
                 await notify.sendNotify("10s阅读", `${message}\n\n吹水群：https://t.me/wenmou_car`);
             }
         } else {
             $.msg($.name, "", '10s阅读' + message)
         }
-
-
+        */
     })()
     .catch((e) => $.logErr(e))
     .finally(() => $.done())
@@ -93,9 +95,9 @@ message = ""
 function read10sck() {
     if ($request.url.indexOf("do_read") > -1) {
         const read10surls = $request.url
-        let read10surl = read10surls.match(/.+?top/)[0]
+        let read10surl = read10surls.match(/.+?top/)
         $.msg($.name, "", '10s阅读 获取数据获取成功！'+read10surl)
-          if(read10surl)     $.setdata(read10surl,"read10surl")
+          if(read10surl)     $.setdata(read10surl[0],"read10surl")
         //   $.log(read10surl)
         //  const read10shd = JSON.stringify()
         if ($request.headers.Cookie) $.setdata($request.headers.Cookie, `read10sck`)
@@ -120,7 +122,7 @@ function read(url1) {
             headers,
             url
         }
-           console.log(options)
+         //  console.log(options)
         $.get(options, async (err, resp, data) => {
             try {
                 if (err) {
