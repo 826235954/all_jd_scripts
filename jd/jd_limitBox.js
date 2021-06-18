@@ -80,14 +80,16 @@ const JD_API_HOST = `https://api.m.jd.com/client.action`;
             await $.wait(1000);
             
         }
-    }
-   if ($.isNode()) {
+        
+           if ($.isNode()) {
             if (message.length != 0) {
                 await notify.sendNotify("限时盲盒瓜分奖励", `${message}\n\n吹水群：https://t.me/wenmou_car`);
             }
         } else {
             $.msg($.name, "", '限时瓜分盲盒奖励' + message)
         }
+
+    }
 
 })()
 .catch((e) => $.logErr(e))
