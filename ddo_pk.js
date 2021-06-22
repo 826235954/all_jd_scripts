@@ -11,7 +11,7 @@ cron 15 0,6,13,19,21 * * * ddo_pk.js
 ============Quantumultx===============
 [task_local]
 #京享值PK
-15 0,6,13,19,21 * * * https://raw.githubusercontent.com/hyzaw/scripts/main/ddo_pk.js, tag=京享值PK
+15 3,6,13,19,21 * * * https://raw.githubusercontent.com/hyzaw/scripts/main/ddo_pk.js, tag=京享值PK
 ================Loon==============
 [Script]
 cron "15 0,6,13,19,21 * * *" script-path=https://raw.githubusercontent.com/hyzaw/scripts/main/ddo_pk.js,tag=京享值PK
