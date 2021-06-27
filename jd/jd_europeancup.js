@@ -10,6 +10,7 @@
 const $ = new Env('狂欢欧洲杯');
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
+cupExid = $.isNode() ? (process.env.Cupexid ? process.env.Cupexid : 38) : ($.getdata("Cupexid") ? $.getdata("Cupexid") : 38);
 
 const randomCount = $.isNode() ? 20 : 5;
 const notify = $.isNode() ? require('./sendNotify') : '';
@@ -30,7 +31,7 @@ if ($.isNode()) {
 const JD_API_HOST = `https://api.m.jd.com/client.action`;
 message = ""
 $.actid = "901100032442101"
-$.shareuuid = "9ba4c88bed344a8d941f89d1c29eaeb1" //俺的助力码 
+$.shareuuid = "efb9a544a3274c47a66d1e7a5d3e67ee" //俺的助力码 
 !(async () => {
         if (!cookiesArr[0]) {
             $.msg($.name, '【提示】请先获取cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/', {
