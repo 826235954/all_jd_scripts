@@ -1,319 +1,38 @@
-/*
-OK语音
-10W分兑换100K币,可提现
-每日任务具体多少没算,反正都是挂着脚本,10w分可兑换100K币
-export okAuth=""
-export oksource ="android" //或ios
-也可以邀请人 ,A邀请B,A得三块,B邀请C,B得三块,(一个号一次),都发红包转给A然后凑100提现
-https://t.me/wenmou_car
-[task_local]
-#OK语音
-0-59/6 8-14 * * * https://raw.githubusercontent.com/Wenmoux/scripts/wen/other/okyuyin.js, tag=OK语音, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true 
-*/
-const $ = new Env('OK语音');
+const $ = new Env('OK语音获取Auth');
 const notify = $.isNode() ? require('./sendNotify') : '';
 const okSource = $.isNode() ? (process.env.oksource ? process.env.oksource : "android") : "ios";
-const okAuth = $.isNode() ? (process.env.okAuth ? process.env.okAuth : "") : ($.getdata('okAuth') ? JSON.parse($.getdata('okAuth')) : "")
-if (okAuth.match("&")) {
-    okauthArr = okAuth.split("&")
-} else {
-    okauthArr = [okAuth]
-}
+const okPhone = $.isNode() ? (process.env.okPhone ? process.env.okPhone :null) : $.getdata('okPhone')
+const okPwd = $.isNode() ? (process.env.okPwd ? process.env.okPwd :null) : $.getdata('okPwd')
 message = ""
 !(async () => {
         if (typeof $request !== "undefined") {
             //   await read10sck()
         }
-        if (!okauthArr[0]) {
-            $.msg($.name, '【提示】请先获取cookie', '自行应用商店下载ok语音app抓包请求头里authorization', {
-                "open-url": ""
-            });
-            return;
+        for (let k = 0; k < 1; k++) {  
+        if(okPhone){    
+            await login()  
+            }else{
+            console.log("你的手机号呢")}
         }
-        console.log(`共${okauthArr.length}个账号`)
-        for (let k = 0; k < okauthArr.length; k++) {
-            $.canRead = true
-            $.isLogin = true
-            $.message = ""
-            auth = okauthArr[k];
-            console.log(auth)
-            console.log(`--------账号 ${k} 任务执行中--------\n`)
-            await getInfo()
-            await ao()
-            if ($.isLogin) {
-                await getaskList()
-                for (p = 0; p < $.taskList.length; p++) {
-                    let task = $.taskList[p]
-                    console.log(`去做任务：${task.title}  ${task.finishNums}/${task.dayFinishToplimit} ${task.taskStatus} `)
-                    if(task.taskType==8){await sign()}
-                    await receivetask(task.taskType)
-
-                }
-                await getInfo()
-                if ($.message.length != 0) {
-                    message +=  "账号$" +(k+1)+ "：  " + $.message + " \n"
-                }
-            } else {
-                $.msg($.name, "", `OK 账号${k+1}auth已失效`)
-            }
-            console.log("\n\n")
-        }
-
-
-        if ($.isNode() &&new Date().getHours() == 9) {
-            if (message.length != 0) {
-                   await notify.sendNotify("OK", `${message}\n\n吹水群：https://t.me/wenmou_car`);
-            }
-        } else {
-            $.msg($.name, "",  message)
-        }
-
     })()
     .catch((e) => $.logErr(e))
     .finally(() => $.done())
 //获取活动信息
 
 
-function read10sck() {
-    if ($request.url.indexOf("do_read") > -1) {
-        const read10surls = $request.url
-        let read10surl = read10surls.match(/(.+?)\/read_channel/)
-        $.setdata(JSON.stringify($request.headers), "read10surl")
-        //        $.msg($.name, "", '10s阅读 获取数据获取成功！'+read10surl)
-        if (read10surl) $.setdata(read10surl[1], "read10surl")
-        if ($request.headers.Cookie) $.setdata($request.headers.Cookie, `read10sck`)
-        $.log(read10sck)
-        $.msg($.name, "", '10s阅读 获取数据获取成功！')
-    }
-}
 
-
-function getaskList() {
+function login() {
     return new Promise(async (resolve) => {
-        let options = taskUrl("kcircle/task/detail")
-        $.get(options, async (err, resp, data) => {
+        let options = taskPostUrl("app/user/login/login",`equipment=109E7C53-6E1F-46F7-B01B-DF119CE76C5C&loginType=&openId=&password=${okPwd}&phone=${okPhone}&sdkAppId=&source=${okSource}&ticket=&type=1`)     
+          $.post(options, async (err, resp, data) => {
             try {
                 if (err) {
                     console.log(`${JSON.stringify(err)}`);
                     console.log(`${$.name} API请求失败，请检查网路重试`);
                 } else {
                     if (data) {
-                        let info = JSON.parse(data)
-                        if (info.code == 200 && info.data) {
-                            $.taskList = info.data.filter(x => x.taskStatus != 4 && x.taskType != 130 && x.taskType != 27 && x.taskType != 24 && x.taskType != 23)
-                            console.log("任务列表：")
-                            for (p = 0; p < info.data.length; p++) {
-                                let task = info.data[p]
-                            console.log(`    ${task.title}  ${task.finishNums}/${task.dayFinishToplimit} ${task.taskStatus} `)         
-                            }
-                        } else {
-                            console.log(data)
-                        }
-                    }
-                }
-            } catch (e) {
-                $.logErr(e, resp);
-            } finally {
-                resolve();
-            }
-        });
-    });
-}
-
-function getInfo() {
-    return new Promise(async (resolve) => {
-        let options = taskUrl("app/summary/getMyKfraction")
-        $.get(options, async (err, resp, data) => {
-            try {
-                if (err) {
-                    console.log(`${JSON.stringify(err)}`);
-                    console.log(`${$.name} API请求失败，请检查网路重试`);
-                } else {
-                    if (data) {
-                        let info = JSON.parse(data)
-                        if (info.code == 200) {
-                            $.message = `当前${info.data.totalKfraction}K分 已提 ${info.data.converted}K币 `
-                            console.log($.message)
-                        } else {
-                            console.log(data)
-                            $.isLogin = false
-                        }
-                    }
-                }
-            } catch (e) {
-                $.logErr(e, resp);
-            } finally {
-                resolve();
-            }
-        });
-    });
-}
-
-function ao() {
-    return new Promise(async (resolve) => {
-        let options = taskUrl("app/kcircle/answer/subjectInfo")
-        $.get(options, async (err, resp, data) => {
-            try {
-                if (err) {
-                    console.log(`${JSON.stringify(err)}`);
-                    console.log(`${$.name} API请求失败，请检查网路重试`);
-                } else {
-                    if (data) {
-
-                        let info = JSON.parse(data)
-                        if (info.code == 200) {
-                            console.log(info.msg)
-                        } else {
-                            console.log(data)
-                            $.isLogin = false
-                        }
-                    }
-                }
-            } catch (e) {
-                $.logErr(e, resp);
-            } finally {
-                resolve();
-            }
-        });
-    });
-}
-
-function receivetask(id) {
-    return new Promise(async (resolve) => {
-        let options = taskUrl("kcircle/task/receive", `taskType=${id}`)
-        $.get(options, async (err, resp, data) => {
-            try {
-                if (err) {
-                    console.log(`${JSON.stringify(err)}`);
-                    console.log(`${$.name} API请求失败，请检查网路重试`);
-                } else {
-                    if (data) {
-                        let info = JSON.parse(data)
-                        if (info.code == 200) {
-                            console.log(`    领取任务：操作成功`)
-                            if (id == 25) {
-                                await $.wait(60 * 1000)
-                            }
-                            await completetask(id)
-                            await $.wait(500)
-                        } else {
-                            console.log("    " + info.msg)
-                            if ((/奖励未领取/).test(info.msg)) {
-                                await receive(id)
-                            }
-                        }
-                        resolve(info.code)
-                    }
-                }
-            } catch (e) {
-                $.logErr(e, resp);
-            } finally {
-                resolve();
-            }
-        });
-    });
-}
-
-function completetask(id) {
-    return new Promise(async (resolve) => {
-        options = taskPostUrl("kcircle/task/completed", {
-            "commentId": "",
-            "source": "",
-            "taskType": id
-        })
-        if (id == 30) {
-            options = taskPostUrl("app/kcircle/answer/complete", {})
-        }
-        if (id == "answervideo") {
-            options = taskPostUrl("app/kcircle/answer/answerVideo", {
-                "detailId": "350533068672712705",
-                "recordId": "350533068672712704",
-                "source": "9",
-                "summaryId": "350533068672712706"
-            })
-        }
-        $.post(options, async (err, resp, data) => {
-            try {
-                if (err) {
-                    console.log(`${JSON.stringify(err)}`);
-                    console.log(`${$.name} API请求失败，请检查网路重试`);
-                } else {
-                    if (data) {
-                        let info = JSON.parse(data)
-                        if (info.code == 200) {
-                            if (info.data.taskStatus == 4) {
-                                console.log("    " + info.msg)
-                            } else {
-                                if (id == 30) {
-                                    console.log(`    答题成功,活动K分${info.data.reward} 共奖励 ${info.data.rewardTotal}`)
-                                    await $.wait(500);
-                                    await receivetask(30)
-                                    await completetask("answervideo")                                    
-                                }     else   if (id == "answervideo") {
-                                    console.log(`    答题激励 获得K分：${info.data.reward}`)
-                                } else {
-                                    console.log("    " + info.data.msg)
-                                    await receive(id)
-                                }
-                            }
-                        } else {
-                            console.log("    " + info.msg)
-                        }
-                    }
-                }
-            } catch (e) {
-                $.logErr(e, resp);
-            } finally {
-                resolve();
-            }
-        });
-    });
-}
-
-function receive(id) {
-    return new Promise(async (resolve) => {
-        let options = taskUrl("kcircle/task/receiveKFraction", `taskType=${id}`)
-        $.get(options, async (err, resp, data) => {
-            try {
-                if (err) {
-                    console.log(`${JSON.stringify(err)}`);
-                    console.log(`${$.name} API请求失败，请检查网路重试`);
-                } else {
-                    if (data) {
-                        let info = JSON.parse(data)
-                        if (info.code == 200) {
-                            console.log("    " + info.data.finishVideoButton + " ：" + info.data.kfraction)
-                            await receivetask(id)
-                            await $.wait(800);
-                        } else {
-                            console.log("    " + info.msg)
-                        }
-                    }
-                }
-            } catch (e) {
-                $.logErr(e, resp);
-            } finally {
-                resolve();
-            }
-        });
-    });
-}
-function sign() {
-    return new Promise(async (resolve) => {
-        let options = taskUrl("kcircle/task/signIn","")
-        $.post(options, async (err, resp, data) => {
-            try {
-                if (err) {
-                    console.log(`${JSON.stringify(err)}`);
-                    console.log(`${$.name} API请求失败，请检查网路重试`);
-                } else {
-                    if (data) {
-                        let info = JSON.parse(data)
-                        if (info.code == 200) {
-                            console.log("    签到结果："+info.msg)
-                        } else {
-                            console.log("    " + info.msg)
-                        }
+                        let info = JSON.parse(data)                        
+                        console.log(info.data)        
                     }
                 }
             } catch (e) {
@@ -327,28 +46,16 @@ function sign() {
 function taskPostUrl(url, body) {
     return {
         url: `http://api.new.okyuyin.com/biz/${url}`,
-        json: body,
+        body,
         headers: {
             'Host': 'api.new.okyuyin.com',
             'user-agent': 'okhttp/4.3.1',
-            'source': okSource,
-            'authorization': auth,
-            'content-type': 'application/json; charset=UTF-8',
+            'source': okSource
         }
     }
 }
 
-function taskUrl(url, body) {
-    return {
-        url: `http://api.new.okyuyin.com/biz/${url}?${body}`,
-        headers: {
-            'Host': 'api.new.okyuyin.com',
-            'user-agent': 'okhttp/4.3.1',
-            'source': okSource,
-            'authorization': auth
-        }
-    }
-}
+
 function jsonParse(str) {
     if (typeof str == "string") {
         try {
