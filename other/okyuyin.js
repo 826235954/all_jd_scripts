@@ -51,7 +51,7 @@ message = ""
                 }
                 await getInfo()
                 if ($.message.length != 0) {
-                    message += nickname[k] + "：  " + $.message + " \n"
+                    message +=  "账号$" +(k+1)+ "：  " + $.message + " \n"
                 }
             } else {
                 $.msg($.name, "", `OK 账号${k+1}auth已失效`)
