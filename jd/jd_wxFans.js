@@ -66,7 +66,7 @@ $.actid = "aae88e19901340a28b604f5cf5b61dd6"
                 await getMyPin()
                 await adlog()
                 await getActinfo()
-                if($.taskList){
+                if($.taskList&&!$.fd3){
                 await getask()
                 await getActinfo(true)
                 console.log("去抽福袋...")
@@ -74,13 +74,6 @@ $.actid = "aae88e19901340a28b604f5cf5b61dd6"
                 if($.energy>=60 && !$.fd2) await dotask("startDraw","&drawType=02")
                 if($.energy>=100 && !$.fd3) await dotask("startDraw","&drawType=03")
              }   
-            }
-        }
-        if (message.length != 0 && new Date().getHours() == 11) {
-            if ($.isNode()) {
-                await notify.sendNotify("星系牧场", `${message}\n牧场入口：QQ星儿童牛奶京东自营旗舰店->星系牧场\n\n吹水群：https://t.me/wenmouxx`);
-            } else {
-                $.msg($.name, "", '星系牧场' + message)
             }
         }
     })()

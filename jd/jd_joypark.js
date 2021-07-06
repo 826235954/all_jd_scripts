@@ -57,7 +57,11 @@ codeList = []
                     await getReward(task.taskType, task.id)
                     }
                 }  
-                await getinfo(1,167)  
+                if(codeList[0]){
+                console.log(`为 ${codeList[0]}助力中`)
+                await getinfo(1,167,codeList[0])              
+                }
+                
             }
         }
     }
@@ -164,7 +168,6 @@ function dotask(type, id, itemid) {
 function getReward(type, id) {
     return new Promise(async (resolve) => {
         let options = taskPostUrl("apTaskDrawAward", `{"taskType":"${type}","taskId":${id},"linkId":"${$.linkid}"}`)
-        //  console.log(options)
         $.post(options, async (err, resp, data) => {
             try {
                 if (err) {
@@ -188,11 +191,9 @@ function getReward(type, id) {
     });
 }
 
-function getinfo(inviteType="2",id="") {
+function getinfo(inviteType="2",id="",invitePin) {
     return new Promise(async (resolve) => {
-        let options = taskPostUrl("joyBaseInfo", `{"taskId":"${id}","inviteType":"${inviteType}","inviterPin":"${$.invitePin}","linkId":"${$.linkid}"}`)
-        //{"taskId":"","inviteType":"","inviterPin":"","linkId":"${$.linkid}"}`)
-   //     console.log(options)
+        let options = taskPostUrl("joyBaseInfo", `{"taskId":"${id}","inviteType":"${inviteType}","inviterPin":"${invitePin?invitePin:$.invitePin}","linkId":"${$.linkid}"}`)
         $.post(options, async (err, resp, data) => {
             try {
                 if (err) {
@@ -203,15 +204,19 @@ function getinfo(inviteType="2",id="") {
                     if (data.success) {                        
                         let info = data.data
                         if(inviteType ==2){
-                        let joyinfo = `等级：Lv${info.level}\n金币：${info.joyCoin} ${info.guideStep}/s\n邀请码：${info.invitePin}`
-                        console.log(joyinfo)               
+                        let joyinfo = `等级：Lv${info.level}\n金币：${info.joyCoin} \n离线收益：${info.leaveJoyCoin}\n邀请码：${info.invitePin}`
+                        console.log(joyinfo)   
+                        console.log(`账号${$.index} 助力码 ${info.invitePin}`)                  
                    }    
-                   if($.index ==1){                 
+                       if($.index ==1){
                        $.invitePin = info.invitePin
-                     console.log(`账号1 助力码 ${$.invitePin}`)   }                     
-                        if(inviteType ==1) console.log(`助力结果：${info.helpState}`)                      
+                       }                        
+                        codeList[codeList.length]  =   info.invitePin             
+                        if(inviteType ==1) {
+                        console.log(`助力结果：${info.helpState}`)         
+                        resolve(info.helpState) 
+                        }         
                     }
-
                 }
             } catch (e) {
                 $.logErr(e, resp);
@@ -264,11 +269,6 @@ function taskUrl(function_id, body) {
     return {
         url: `${JD_API_HOST}/?functionId=${function_id}&body=${encodeURIComponent(body)}&_t=${Date.now()}&appid=activities_platform`,
         headers: {
-       //     "Accept": "*/*",
-      //      "Accept-Encoding": "gzip, deflate, br",
-        //    "Accept-Language": "zh-cn",
-      //      "Connection": "keep-alive",
-       //     "Content-Type": "application/x-www-form-urlencoded",
             "Host": "api.m.jd.com",
             "Referer": "https://joypark.jd.com/?activityId=LsQNxL7iWDlXUs6cFl-AAg&sid=4e81f8a1ce23cf73f23d04a0fb77d31w&un_area=27_2442_2444_31912",
             "Cookie": cookie,

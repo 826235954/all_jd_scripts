@@ -232,10 +232,19 @@ function getMyPin() {
                 } else {
                     //       console.log(data)
                     data = JSON.parse(data);
+                                        if ($.isNode())
+                        for (let ck of resp['headers']['set-cookie']) {
+                            cookie = `${cookie}; ${ck.split(";")[0]};`
+                        }
+                    else {
+                        for (let ck of resp['headers']['Set-Cookie'].split(',')) {
+                            cookie = `${cookie}; ${ck.split(";")[0]};`
+                        }
+                    }
                     if (data.data && data.data.secretPin) {
                         $.pin = data.data.secretPin
                         //    console.log($.pin)
-                        cookie = `${cookie} AUTH_C_USER=${$.pin};`
+                     //   cookie = `${cookie} AUTH_C_USER=${$.pin};`
                         $.nickname = data.data.nickname
                         console.log(`欢迎回来~  ${$.nickname}`);
                     }
