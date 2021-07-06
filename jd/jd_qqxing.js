@@ -99,13 +99,18 @@ $.shareuuid = "8cec00a4917e4af6ae49f8f4f9e7b58d"
                         await draw()
                     }
                     let exchanges =Math.floor($.foodNum/3000)
-                    console.log(`可兑换 ${exchanges} 次 20京🐶`)
+                    console.log(`可兑换 ${exchanges} 次 50京🐶`) 
                     for(q = 0;q<exchanges && Exchange;q++){
-                    await exchange(14)   
+                    await exchange(14)    //16是100豆
                     }
-                    await getinfo()
-                    if(!Exchange){console.log("你 默认 不兑换东西,请自行进去活动兑换")}
+                    await getinfo()                     
+                    if(!Exchange){console.log("你 默认 不兑换东西,请自行进去活动兑换")}                    
                     message += `【京东账号${$.index}】${$.nickName || $.UserName}\n${$.cow} 兑换京🐶 ${$.exchange}  ${$.drawresult}\n`
+                    if($.index%3===0) 
+                   {
+                  await $.wait(60*1000) 
+                  console.log("休息休息~") 
+                   }                     
                 } else {
                   $.msg($.name, "", "跑不起来了~请自己进去一次牧场")
                 }

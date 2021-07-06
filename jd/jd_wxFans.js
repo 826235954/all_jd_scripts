@@ -73,7 +73,9 @@ $.actid = "aae88e19901340a28b604f5cf5b61dd6"
                 if($.energy>=30 && !$.fd1) await dotask("startDraw","&drawType=01")
                 if($.energy>=60 && !$.fd2) await dotask("startDraw","&drawType=02")
                 if($.energy>=100 && !$.fd3) await dotask("startDraw","&drawType=03")
-             }   
+             }  else{
+            console.log("你已经开满啦")              
+             } 
             }
         }
     })()

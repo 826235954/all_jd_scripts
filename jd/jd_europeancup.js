@@ -97,8 +97,12 @@ $.shareuuid = "efb9a544a3274c47a66d1e7a5d3e67ee" //俺的助力码
                     }
                     await exchange(38) //兑换10豆
                     await getinfo()
-
                     message += `【京东账号${$.index}】${$.nickName || $.UserName}\n${$.cow} \n ${$.exchange}\n`
+                   if($.index%3===0) 
+                   {
+                  await $.wait(60*1000) 
+                  console.log("休息休息~") 
+                   }
                 } else {
                     console.log("跑不起来了~请自己进去一次球场")
                 }
