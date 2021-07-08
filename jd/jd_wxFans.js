@@ -67,7 +67,7 @@ $.actid = "aae88e19901340a28b604f5cf5b61dd6"
                 await adlog()
                 await getActinfo()
                 if($.taskList&&!$.fd3){
-                await getask()
+                if($.energy<100) await getask()
                 await getActinfo(true)
                 console.log("去抽福袋...")
                 if($.energy>=30 && !$.fd1) await dotask("startDraw","&drawType=01")
